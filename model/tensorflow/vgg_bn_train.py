@@ -149,7 +149,7 @@ if __name__ == "__main__":
                   "{:.4f}".format(acc1) + ", Top5 = " + \
                   "{:.4f}".format(acc5))
 
-            images_batch_val, labels_batch_val = loader_val.next_batch(256)
+            images_batch_val, labels_batch_val = loader_val.next_batch(batch_size)
             cat_labels_val = to_categorical(labels_batch_val, num_classes=100)
             vl, vacc1, vacc5 = model.test_on_batch(images_batch_val, cat_labels_val)
             print("-Iter " + str(step) + ", Validation Loss= " + \

@@ -1,7 +1,8 @@
 import datetime
 import numpy as np
 from keras.models import Sequential, load_model
-from keras.layers.core import Activation, BatchNormalization, Dense, Dropout, Flatten
+from keras.layers import BatchNormalization
+from keras.layers.core import Activation, Dense, Dropout, Flatten
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D
 from keras.optimizers import SGD
 from keras.metrics import categorical_accuracy, top_k_categorical_accuracy

@@ -94,7 +94,7 @@ def VGG_16(weights_path=None):
     return model
 
 if __name__ == "__main__":
-    batch_size = 256
+    batch_size = 64
     load_size = 256
     fine_size = 224
     c = 3

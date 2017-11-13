@@ -11,3 +11,6 @@ checkpoint
 *.data-*
 *.index
 *.meta
+
+.DS_Store
+s

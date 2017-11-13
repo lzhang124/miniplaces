@@ -109,7 +109,7 @@ if __name__ == "__main__":
     while step < training_iters:
         # Load a batch of training data
         images_batch, labels_batch = loader_train.next_batch(batch_size)
-        labels_batch = np.eye(100)[labels_batch]
+        labels_batch = np.eye(100)[labels_batch.astype(int)]
         l, acc1, acc5 = model.train_on_batch(images_batch, labels_batch)
 
         if step % step_display == 0:
@@ -121,7 +121,7 @@ if __name__ == "__main__":
                   "{:.4f}".format(acc5))
 
             images_batch_val, labels_batch_val = loader_val.next_batch(batch_size)
-            labels_batch_val = np.eye(100)[labels_batch_val]
+            labels_batch_val = np.eye(100)[labels_batch_val.astype(int)]
             vl, vacc1, vacc5 = model.test_on_batch(images_batch_val, labels_batch_val)
             print("-Iter " + str(step) + ", Validation Loss= " + \
                   "{:.6f}".format(vl) + ", Accuracy Top1 = " + \
@@ -145,7 +145,7 @@ if __name__ == "__main__":
     loader_val.reset()
     for i in range(num_batch):
         images_batch, labels_batch = loader_val.next_batch(batch_size)
-        labels_batch = np.eye(100)[labels_batch]
+        labels_batch = np.eye(100)[labels_batch.astype(int)]
         l, acc1, acc5 = model.test_on_batch(images_batch, labels_batch)
         acc1_total += acc1
         acc5_total += acc5

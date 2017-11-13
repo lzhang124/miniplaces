@@ -9,10 +9,6 @@ from keras.utils.np_utils import to_categorical
 from DataLoader import *
 
 
-def accuracy5(y_true, y_pred):
-    return top_k_categorical_accuracy(y_true, y_pred, k=5)
-
-
 def VGG_16(weights_path=None):
     model = Sequential()
     model.add(ZeroPadding2D((1,1),input_shape=(224,224,3)))
@@ -101,7 +97,7 @@ if __name__ == "__main__":
     else:
         model = VGG_16()
         sgd = SGD(lr=lr, decay=1e-6, momentum=0.9, nesterov=True)
-        model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=[categorical_accuracy, accuracy5])
+        model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=[categorical_accuracy, top_k_categorical_accuracy])
 
     step = 0
     while step < training_iters:

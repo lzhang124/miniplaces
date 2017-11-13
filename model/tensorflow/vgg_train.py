@@ -117,7 +117,7 @@ if __name__ == "__main__":
                   "{:.4f}".format(acc1) + ", Top5 = " + \
                   "{:.4f}".format(acc5))
 
-            images_batch_val, labels_batch_val = loader_val.next_batch(batch_size)
+            images_batch_val, labels_batch_val = loader_val.next_batch(256)
             labels_batch_val = np.eye(100)[labels_batch_val.astype(int)]
             vl, vacc1, vacc5 = model.test_on_batch(images_batch_val, labels_batch_val)
             print("-Iter " + str(step) + ", Validation Loss= " + \

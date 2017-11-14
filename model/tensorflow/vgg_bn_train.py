@@ -96,7 +96,7 @@ if __name__ == '__main__':
     fine_size = 224
     c = 3
     data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
-    lr = 0.01
+    lr = 0.001
     training_iters = 50000
     step_display = 50
     step_save = 10000

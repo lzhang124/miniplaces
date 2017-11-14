@@ -90,13 +90,13 @@ def VGG_16(weights_path=None):
 
     return model
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     batch_size = 32
     load_size = 256
     fine_size = 224
     c = 3
     data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
-    lr = 0.1
+    lr = 0.01
     training_iters = 50000
     step_display = 50
     step_save = 10000
@@ -138,32 +138,32 @@ if __name__ == "__main__":
         l, acc1, acc5 = model.train_on_batch(images_batch, cat_labels)
 
         if step % step_display == 0:
-            print('[%s]:' %(datetime.datetime.now().strftime("%H:%M:%S")))
+            print '[{}]:'.format(datetime.datetime.now().strftime('%H:%M:%S'))
 
-            print("-Iter " + str(step) + ", Training Loss= " + \
-                  "{:.6f}".format(l) + ", Accuracy Top1 = " + \
-                  "{:.4f}".format(acc1) + ", Top5 = " + \
-                  "{:.4f}".format(acc5))
+            print '-Iter {}, Training Loss= '.format(step) + \
+                  '{:.4f}, Accuracy Top1 = '.format(l) + \
+                  '{:.4f}, Top5 = '.format(acc1) + \
+                  '{:.4f}'.format(acc5)
 
             images_batch_val, labels_batch_val = loader_val.next_batch(batch_size)
             cat_labels_val = to_categorical(labels_batch_val, num_classes=100)
             vl, vacc1, vacc5 = model.test_on_batch(images_batch_val, cat_labels_val)
-            print("-Iter " + str(step) + ", Validation Loss= " + \
-                  "{:.6f}".format(vl) + ", Accuracy Top1 = " + \
-                  "{:.4f}".format(vacc1) + ", Top5 = " + \
-                  "{:.4f}".format(vacc5))
+            print '-Iter {}, Validation Loss= '.format(step) + \
+                  '{:.4f}, Accuracy Top1 = '.format(vl) + \
+                  '{:.4f}, Top5 = '.format(vacc1) + \
+                  '{:.4f}'.format(vacc5)
 
         step += 1
 
         # Save model
         if step % step_save == 0:
             model.save(path_save.format(step))
-            print("Model saved at Iter %d !" %(step))
+            print 'Model saved at iter {}!'.format(step)
 
-    print("Optimization Finished!")
+    print 'Optimization Finished!'
 
     # Evaluate on the whole validation set
-    print('Evaluation on the whole validation set...')
+    print 'Evaluation on the whole validation set...'
     num_batch = loader_val.size()//batch_size
     acc1_total = 0.
     acc5_total = 0.
@@ -174,10 +174,6 @@ if __name__ == "__main__":
         l, acc1, acc5 = model.test_on_batch(images_batch, cat_labels)
         acc1_total += acc1
         acc5_total += acc5
-        print("Validation Accuracy Top1 = " + \
-              "{:.4f}".format(acc1) + ", Top5 = " + \
-              "{:.4f}".format(acc5))
-
     acc1_total /= num_batch
     acc5_total /= num_batch
-    print('Evaluation Finished! Accuracy Top1 = ' + "{:.4f}".format(acc1_total) + ", Top5 = " + "{:.4f}".format(acc5_total))
+    print 'Evaluation Finished! Accuracy Top1 = {:.4f}, Top5 = {:.4f}'.format(acc1_total, acc5_total)

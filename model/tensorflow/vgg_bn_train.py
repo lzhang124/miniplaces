@@ -152,18 +152,18 @@ if __name__ == '__main__':
         sgd = SGD(lr=lr, decay=1e-6, momentum=0.9, nesterov=True)
         model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=[categorical_accuracy, top_k_categorical_accuracy])
 
-    checkpoint = ModelCheckpoint(path_save)
-    callbacks_list = [checkpoint]
-    model.fit_generator(
-        generator=create_generator(loader_train, batch_size),
-        steps_per_epoch=steps_per_epoch,
-        epochs=epochs,
-        callbacks=callbacks_list,
-        validation_data=create_generator(loader_val, batch_size),
-        validation_steps=validation_steps
-    )
-    model.save(model_file)
-    print 'Training Finished!'
+        checkpoint = ModelCheckpoint(path_save)
+        callbacks_list = [checkpoint]
+        model.fit_generator(
+            generator=create_generator(loader_train, batch_size),
+            steps_per_epoch=steps_per_epoch,
+            epochs=epochs,
+            callbacks=callbacks_list,
+            validation_data=create_generator(loader_val, batch_size),
+            validation_steps=validation_steps
+        )
+        model.save(model_file)
+        print 'Training Finished!'
 
     loader_val.reset()
     model.evaluate_generator(

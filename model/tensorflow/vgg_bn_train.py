@@ -193,7 +193,6 @@ if __name__ == '__main__':
 
     if args.test:
         print 'Predicting...'
-        
         preds = model.predict_generator(
             generator=create_generator(loader_test, batch_size),
             steps=test_steps

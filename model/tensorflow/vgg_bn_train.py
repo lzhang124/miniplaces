@@ -182,10 +182,11 @@ if __name__ == '__main__':
 
     print 'Validating...'
     loader_val.reset()
-    model.evaluate_generator(
+    l, acc1, acc5 = model.evaluate_generator(
         generator=create_generator(loader_val, batch_size),
         steps=validation_steps
     )
+    print 'loss: {}, acc1: {}, acc5: {}'.format(l, acc1, acc5)
 
     print 'Predicting...'
     preds = model.predict_generator(

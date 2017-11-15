@@ -192,33 +192,34 @@ if __name__ == '__main__':
         print 'loss: {}, acc1: {}, acc5: {}'.format(l, acc1, acc5)
 
     if args.test:
-        # print 'Predicting...'
-        # preds = model.predict_generator(
-        #     generator=create_generator(loader_test, batch_size),
-        #     steps=test_steps
-        # )
-
-        # print 'Saving predictions...'
-        # with open('../../data/test.txt','r') as lines:
-        #     filenames = [line.split(' ')[0] for line in lines]
-
-        # with open('../../evaluation/test.pred.txt','w') as file:
-        #     top_indices = preds.argsort()[:,-5:]
-        #     for i in xrange(len(preds)):
-        #         top5 = ' '.join(str(j) for j in top_indices[i])
-        #         file.write(filenames[i] + ' ' + top5 + '\n')
         print 'Predicting...'
         preds = model.predict_generator(
-            generator=create_generator(loader_val, batch_size),
+            generator=create_generator(loader_test, batch_size),
             steps=test_steps
         )
 
         print 'Saving predictions...'
-        with open('../../data/val.txt','r') as lines:
+        with open('../../data/test.txt','r') as lines:
             filenames = [line.split(' ')[0] for line in lines]
 
-        with open('../../evaluation/val.pred.txt','w') as file:
+        with open('../../evaluation/test.pred.txt','w') as file:
             top_indices = preds.argsort()[:,-5:]
             for i in xrange(len(preds)):
                 top5 = ' '.join(str(j) for j in top_indices[i])
                 file.write(filenames[i] + ' ' + top5 + '\n')
+                
+        # print 'Predicting...'
+        # preds = model.predict_generator(
+        #     generator=create_generator(loader_val, batch_size),
+        #     steps=test_steps
+        # )
+
+        # print 'Saving predictions...'
+        # with open('../../data/val.txt','r') as lines:
+        #     filenames = [line.split(' ')[0] for line in lines]
+
+        # with open('../../evaluation/val.pred.txt','w') as file:
+        #     top_indices = preds.argsort()[:,-5:]
+        #     for i in xrange(len(preds)):
+        #         top5 = ' '.join(str(j) for j in top_indices[i])
+        #         file.write(filenames[i] + ' ' + top5 + '\n')

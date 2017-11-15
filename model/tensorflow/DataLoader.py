@@ -75,6 +75,7 @@ class DataLoaderDisk(object):
         self.randomize = kwargs['randomize']
         self.data_root = os.path.join(kwargs['data_root'])
         self.num_categories = kwargs['num_categories']
+        self.labels = kwargs['labels']
 
         # read data info from lists
         self.list_im = []
@@ -97,8 +98,9 @@ class DataLoaderDisk(object):
         self._idx = 0
         
     def next_batch(self, batch_size):
-        images_batch = np.zeros((batch_size, self.fine_size, self.fine_size, 3)) 
-        labels_batch = np.zeros((batch_size, self.num_categories))
+        images_batch = np.zeros((batch_size, self.fine_size, self.fine_size, 3))
+        if self.labels:
+            labels_batch = np.zeros((batch_size, self.num_categories))
         for i in range(batch_size):
             image = scipy.misc.imread(self.list_im[self._idx])
             image = scipy.misc.imresize(image, (self.load_size, self.load_size))
@@ -115,13 +117,16 @@ class DataLoaderDisk(object):
                 offset_w = (self.load_size-self.fine_size)//2
 
             images_batch[i, ...] =  image[offset_h:offset_h+self.fine_size, offset_w:offset_w+self.fine_size, :]
-            labels_batch[i][self.list_lab[self._idx]] = 1.0
+            if self.labels:
+                labels_batch[i][self.list_lab[self._idx]] = 1.0
             
             self._idx += 1
             if self._idx == self.num:
                 self._idx = 0
         
-        return images_batch, labels_batch
+        if self.labels:
+            return images_batch, labels_batch
+        return images_batch
     
     def size(self):
         return self.num

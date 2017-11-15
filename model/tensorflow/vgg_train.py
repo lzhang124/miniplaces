@@ -93,7 +93,8 @@ if __name__ == '__main__':
         'fine_size': fine_size,
         'data_mean': data_mean,
         'randomize': True,
-        'num_categories': 100
+        'num_categories': 100,
+        'labels': True
         }
     opt_data_val = {
         'data_root': '../../data/images/',
@@ -102,7 +103,8 @@ if __name__ == '__main__':
         'fine_size': fine_size,
         'data_mean': data_mean,
         'randomize': False,
-        'num_categories': 100
+        'num_categories': 100,
+        'labels': True
         }
     opt_data_test = {
         'data_root': '../../data/images/',
@@ -111,7 +113,8 @@ if __name__ == '__main__':
         'fine_size': fine_size,
         'data_mean': data_mean,
         'randomize': False,
-        'num_categories': 100
+        'num_categories': 100,
+        'labels': False
         }
 
     loader_train = DataLoaderDisk(**opt_data_train)

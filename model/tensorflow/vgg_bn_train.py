@@ -155,7 +155,7 @@ if __name__ == '__main__':
     loader_val = DataLoaderDisk(**opt_data_val)
     loader_test = DataLoaderDisk(**opt_data_test)
 
-    assert loader_val.size() % batch_size == 0, "Batch size must be a divisor of {}".format(loader_val.size())
+    assert loader_val.size() % batch_size == 0, 'Batch size must be a divisor of {}'.format(loader_val.size())
     steps_per_epoch = loader_train.size() / batch_size
     validation_steps = loader_val.size() / batch_size
     test_steps = loader_test.size() / batch_size
@@ -191,11 +191,11 @@ if __name__ == '__main__':
         steps=test_steps
     )
 
-    with open("../../data/test.txt","r") as lines:
-        filenames = [line.split(" ")[0] for line in lines]
+    with open('../../data/test.txt','r') as lines:
+        filenames = [line.split(' ')[0] for line in lines]
 
-    with open("test.pred.txt","w") as file:
+    with open('../../evaluation/test.pred.txt','w') as file:
         for i,pred in enumerate(preds):
             top_indices = pred.argsort()[-5:][::-1]
-            top5 = " ".join(str(i) for i in top_indices)
-            file.write(filenames[i] + " " + top5 + "\n") 
+            top5 = ' '.join(str(i) for i in top_indices)
+            file.write(filenames[i] + ' ' + top5 + '\n') 

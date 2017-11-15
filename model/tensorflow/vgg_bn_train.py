@@ -193,10 +193,18 @@ if __name__ == '__main__':
 
     if args.test:
         print 'Predicting...'
-        preds = model.predict_generator(
-            generator=create_generator(loader_test, batch_size),
-            steps=test_steps
-        )
+
+        preds = []
+        test_steps = loader_test.size() / batch_size
+        for i in range(test_steps):
+            images_batch, labels_batch = loader_test.next_batch(batch_size)    
+            preds.append(model.predict_on_batch(images_batch))
+        preds = np.vstack(preds)
+        
+        # preds = model.predict_generator(
+        #     generator=create_generator(loader_test, batch_size),
+        #     steps=test_steps
+        # )
 
         print 'Saving predictions...'
         with open('../../data/test.txt','r') as lines:

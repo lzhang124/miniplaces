@@ -108,6 +108,7 @@ if __name__ == '__main__':
     step_display = 50
     step_save = 10000
     path_save = 'vgg_bn.h5'
+    load = False
 
     opt_data_train = {
         'data_root': '../../data/images/',
@@ -133,8 +134,8 @@ if __name__ == '__main__':
     steps_per_epoch = loader_train.size() / batch_size
     validation_steps = loader_val.size() / batch_size
 
-    if start_from is not None:
-        model = load_model(path_save.format(start_from))    
+    if load:
+        model = load_model(path_save)
     else:
         model = VGG_16()
         sgd = SGD(lr=lr, decay=1e-6, momentum=0.9, nesterov=True)

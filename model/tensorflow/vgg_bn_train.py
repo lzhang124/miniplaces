@@ -107,7 +107,7 @@ def create_generator(loader, batch_size):
 
 
 if __name__ == '__main__':
-    batch_size = 20
+    batch_size = 25
     load_size = 256
     fine_size = 224
     c = 3

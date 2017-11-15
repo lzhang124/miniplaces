@@ -164,7 +164,7 @@ if __name__ == '__main__':
             filenames = [line.split(' ')[0] for line in lines]
 
         with open('../../evaluation/test.pred.txt','w') as file:
-            for i,pred in enumerate(preds):
-                top_indices = pred.argsort()[:,-5:][:,::-1]
-                top5 = ' '.join(str(i) for i in top_indices)
-                file.write(filenames[i] + ' ' + top5 + '\n') 
+            top_indices = preds.argsort()[:,-5:][:,::-1]
+            for i in xrange(len(preds)):
+                top5 = ' '.join(str(j) for j in top_indices[i])
+                file.write(filenames[i] + ' ' + top5 + '\n')

@@ -30,13 +30,20 @@ opt_data_test = {
     }
 
 loader_test = DataLoaderDisk(**opt_data_test)
-images_batch_test, labels_batch_test = loader_test.next_batch(loader_test.size())
+test_steps = loader_test.size() / batch_size
+preds = model.predict_generator(
+    generator=create_generator(loader_test, batch_size),
+    steps=test_steps
+)
 
-model = load_model('vgg16_bn.h5')
-preds = model.predict(images_batch_test)
 file = open("test.pred.txt","w") 
 for i,pred in enumerate(preds):
     top_indices = pred.argsort()[-5:][::-1]
     top5 = " ".join(str(i) for i in top_indices)
     file.write(filenames[i] + " " + top5 + "\n") 
 file.close() 
+
+# images_batch_test, labels_batch_test = loader_test.next_batch(loader_test.size())
+# model = load_model('vgg16_bn.h5')
+# preds = model.predict(images_batch_test)
+

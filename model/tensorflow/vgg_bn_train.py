@@ -194,6 +194,35 @@ if __name__ == '__main__':
         )
         print 'loss: {}, acc1: {}, acc5: {}'.format(l, acc1, acc5)
 
+        opt_data_wat = {
+        'data_root': '../../data/images/',
+        'data_list': '../../data/val.txt',
+        'load_size': load_size,
+        'fine_size': fine_size,
+        'data_mean': data_mean,
+        'randomize': False,
+        'num_categories': 100,
+        'labels': False
+        }
+        loader_wat = DataLoaderDisk(**opt_data_wat)
+
+        print 'Predicting...'
+        preds = model.predict_generator(
+            generator=create_generator(loader_wat, batch_size),
+            steps=validation_steps,
+            verbose=1
+        )
+
+        print 'Saving predictions...'
+        with open('../../data/val.txt','r') as lines:
+            filenames = [line.split(' ')[0] for line in lines]
+
+        with open('../../evaluation/val.pred.txt','w') as file:
+            top_indices = preds.argsort()[:,-5:]
+            for i in xrange(len(preds)):
+                top5 = ' '.join(str(j) for j in top_indices[i])
+                file.write(filenames[i] + ' ' + top5 + '\n')
+
     if args.test:
         print 'Predicting...'
         preds = model.predict_generator(
@@ -208,23 +237,6 @@ if __name__ == '__main__':
             filenames = [line.split(' ')[0] for line in lines]
 
         with open('../../evaluation/test.pred.txt','w') as file:
-            top_indices = preds.argsort()[:,-5:]
-            for i in xrange(len(preds)):
-                top5 = ' '.join(str(j) for j in top_indices[i])
-                file.write(filenames[i] + ' ' + top5 + '\n')
-                
-        print 'Predicting...'
-        preds = model.predict_generator(
-            generator=create_generator(loader_val, batch_size),
-            steps=test_steps,
-            verbose=1
-        )
-
-        print 'Saving predictions...'
-        with open('../../data/val.txt','r') as lines:
-            filenames = [line.split(' ')[0] for line in lines]
-
-        with open('../../evaluation/val.pred.txt','w') as file:
             top_indices = preds.argsort()[:,-5:]
             for i in xrange(len(preds)):
                 top5 = ' '.join(str(j) for j in top_indices[i])

@@ -116,7 +116,7 @@ if __name__ == '__main__':
     epochs = 500
     step_display = 50
     step_save = 10000
-    path_save = 'vgg_bn.h5'
+    path_save = 'vgg19_bn.h5'
     load = False
 
     opt_data_train = {

@@ -120,8 +120,8 @@ if __name__ == '__main__':
     fine_size = 224
     lr = 0.0001
     data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
-    path_save = args.f
-    load = args.l
+    path_save = args.file
+    load = args.load
 
     opt_data_train = {
         'data_root': '../../data/images/',

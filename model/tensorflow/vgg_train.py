@@ -72,6 +72,7 @@ if __name__ == '__main__':
     parser.add_argument('-b', default=25, type=int)
     parser.add_argument('-e', default=500, type=int)
     parser.add_argument('-l', '--load', default=False, action='store_true')
+    parser.add_argument('-f', '--file', default='vgg19_bn.h5')
     args = parser.parse_args()
     
     batch_size = args.b
@@ -80,8 +81,8 @@ if __name__ == '__main__':
     fine_size = 224
     lr = 0.0001
     data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
-    path_save = 'vgg19_bn.h5'
-    load = args.l
+    path_save = args.file
+    load = args.load
 
     opt_data_train = {
         'data_root': '../../data/images/',
@@ -101,13 +102,24 @@ if __name__ == '__main__':
         'randomize': False,
         'num_categories': 100
         }
+    opt_data_test = {
+        'data_root': '../../data/images/',
+        'data_list': '../../data/test.txt',
+        'load_size': load_size,
+        'fine_size': fine_size,
+        'data_mean': data_mean,
+        'randomize': False,
+        'num_categories': 100
+        }
 
     loader_train = DataLoaderDisk(**opt_data_train)
     loader_val = DataLoaderDisk(**opt_data_val)
+    loader_test = DataLoaderDisk(**opt_data_test)
 
-    assert loader_val.size() % batch_size == 0, "Batch size must be a divisor of {}".format(loader_val.size())
+    assert loader_val.size() % batch_size == 0, 'Batch size must be a divisor of {}'.format(loader_val.size())
     steps_per_epoch = loader_train.size() / batch_size
     validation_steps = loader_val.size() / batch_size
+    test_steps = loader_test.size() / batch_size
 
     if load:
         model = load_model(path_save)
@@ -134,3 +146,17 @@ if __name__ == '__main__':
         generator=create_generator(loader_val, batch_size),
         steps=validation_steps
     )
+
+    preds = model.predict_generator(
+        generator=create_generator(loader_test, batch_size),
+        steps=test_steps
+    )
+
+    with open('../../data/test.txt','r') as lines:
+        filenames = [line.split(' ')[0] for line in lines]
+
+    with open('../../evaluation/test.pred.txt','w') as file:
+        for i,pred in enumerate(preds):
+            top_indices = pred.argsort()[-5:][::-1]
+            top5 = ' '.join(str(i) for i in top_indices)
+            file.write(filenames[i] + ' ' + top5 + '\n') 

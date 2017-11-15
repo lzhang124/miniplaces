@@ -191,8 +191,8 @@ if __name__ == '__main__':
         steps=test_steps
     )
 
-    lines = open("../../data/test.txt","r")
-    filenames = [line.split(" ")[0] for line in lines]
+    with open("../../data/test.txt","r") as lines:
+        filenames = [line.split(" ")[0] for line in lines]
 
     with open("test.pred.txt","w") as file:
         for i,pred in enumerate(preds):

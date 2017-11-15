@@ -180,17 +180,20 @@ if __name__ == '__main__':
         model.save(model_file)
         print 'Training Finished!'
 
+    print 'Validating...'
     loader_val.reset()
     model.evaluate_generator(
         generator=create_generator(loader_val, batch_size),
         steps=validation_steps
     )
 
+    print 'Predicting...'
     preds = model.predict_generator(
         generator=create_generator(loader_test, batch_size),
         steps=test_steps
     )
 
+    print 'Saving predictions...'
     with open('../../data/test.txt','r') as lines:
         filenames = [line.split(' ')[0] for line in lines]
 

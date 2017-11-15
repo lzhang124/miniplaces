@@ -67,7 +67,7 @@ def create_generator(loader, batch_size):
 
 
 if __name__ == '__main__':
-    batch_size = 50
+    batch_size = 25
     load_size = 256
     fine_size = 224
     c = 3
@@ -76,7 +76,8 @@ if __name__ == '__main__':
     epochs = 500
     step_display = 50
     step_save = 10000
-    path_save = 'vgg.h5'
+    path_save = 'vgg_bn.h5'
+    load = False
 
     opt_data_train = {
         'data_root': '../../data/images/',
@@ -84,7 +85,8 @@ if __name__ == '__main__':
         'load_size': load_size,
         'fine_size': fine_size,
         'data_mean': data_mean,
-        'randomize': True
+        'randomize': True,
+        'num_categories': 100
         }
     opt_data_val = {
         'data_root': '../../data/images/',
@@ -92,7 +94,8 @@ if __name__ == '__main__':
         'load_size': load_size,
         'fine_size': fine_size,
         'data_mean': data_mean,
-        'randomize': False
+        'randomize': False,
+        'num_categories': 100
         }
 
     loader_train = DataLoaderDisk(**opt_data_train)
@@ -102,8 +105,8 @@ if __name__ == '__main__':
     steps_per_epoch = loader_train.size() / batch_size
     validation_steps = loader_val.size() / batch_size
 
-    if start_from is not None:
-        model = load_model(path_save.format(start_from))    
+    if load:
+        model = load_model(path_save)
     else:
         model = VGG_16()
         sgd = SGD(lr=lr, decay=1e-6, momentum=0.9, nesterov=True)

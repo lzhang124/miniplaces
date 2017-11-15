@@ -32,7 +32,7 @@ opt_data_test = {
 loader_test = DataLoaderDisk(**opt_data_test)
 images_batch_test, labels_batch_test = loader_test.next_batch(loader_test.size())
 
-model = load_model('vgg16.h5')
+model = load_model('vgg16_bn.h5')
 preds = model.predict(images_batch_test)
 file = open("test.pred.txt","w") 
 for i,pred in enumerate(preds):

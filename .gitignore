@@ -4,7 +4,7 @@
 *.tar.gz
 data/images
 data/objects
-*.h5
+.h5
 
 # tf checkpoints
 checkpoint
@@ -13,4 +13,3 @@ checkpoint
 *.meta
 
 .DS_Store
-s

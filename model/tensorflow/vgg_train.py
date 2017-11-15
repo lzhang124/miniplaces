@@ -1,8 +1,9 @@
-import datetime
+import argparse
 import numpy as np
 from keras.callbacks import ModelCheckpoint
 from keras.models import Sequential, load_model
-from keras.layers.core import Dense, Dropout, Flatten
+from keras.layers import BatchNormalization
+from keras.layers.core import Activation, Dense, Dropout, Flatten
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D
 from keras.optimizers import SGD
 from keras.metrics import categorical_accuracy, top_k_categorical_accuracy
@@ -67,17 +68,20 @@ def create_generator(loader, batch_size):
 
 
 if __name__ == '__main__':
-    batch_size = 25
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-b', default=25, type=int)
+    parser.add_argument('-e', default=500, type=int)
+    parser.add_argument('-l', '--load', default=False, action='store_true')
+    args = parser.parse_args()
+    
+    batch_size = args.b
+    epochs = args.e
     load_size = 256
     fine_size = 224
-    c = 3
-    data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
     lr = 0.0001
-    epochs = 500
-    step_display = 50
-    step_save = 10000
-    path_save = 'vgg_bn.h5'
-    load = False
+    data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
+    path_save = 'vgg19_bn.h5'
+    load = args.l
 
     opt_data_train = {
         'data_root': '../../data/images/',
@@ -112,18 +116,18 @@ if __name__ == '__main__':
         sgd = SGD(lr=lr, decay=1e-6, momentum=0.9, nesterov=True)
         model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=[categorical_accuracy, top_k_categorical_accuracy])
 
-    checkpoint = ModelCheckpoint(path_save)
-    callbacks_list = [checkpoint]
-    model.fit_generator(
-        generator=create_generator(loader_train, batch_size),
-        steps_per_epoch=steps_per_epoch,
-        epochs=epochs,
-        callbacks=callbacks_list,
-        validation_data=create_generator(loader_val, batch_size),
-        validation_steps=validation_steps
-    )
-    model.save(model_file)
-    print 'Training Finished!'
+        checkpoint = ModelCheckpoint(path_save)
+        callbacks_list = [checkpoint]
+        model.fit_generator(
+            generator=create_generator(loader_train, batch_size),
+            steps_per_epoch=steps_per_epoch,
+            epochs=epochs,
+            callbacks=callbacks_list,
+            validation_data=create_generator(loader_val, batch_size),
+            validation_steps=validation_steps
+        )
+        model.save(model_file)
+        print 'Training Finished!'
 
     loader_val.reset()
     model.evaluate_generator(

@@ -1,4 +1,4 @@
-import datetime
+import argparse
 import numpy as np
 from keras.callbacks import ModelCheckpoint
 from keras.models import Sequential, load_model
@@ -107,17 +107,20 @@ def create_generator(loader, batch_size):
 
 
 if __name__ == '__main__':
-    batch_size = 25
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-b', default=25, type=int)
+    parser.add_argument('-e', default=500, type=int)
+    parser.add_argument('-l', '--load', default=False, action='store_true')
+    args = parser.parse_args()
+    
+    batch_size = args.b
+    epochs = args.e
     load_size = 256
     fine_size = 224
-    c = 3
-    data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
     lr = 0.0001
-    epochs = 500
-    step_display = 50
-    step_save = 10000
+    data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
     path_save = 'vgg19_bn.h5'
-    load = False
+    load = args.l
 
     opt_data_train = {
         'data_root': '../../data/images/',

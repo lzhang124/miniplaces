@@ -125,7 +125,8 @@ if __name__ == '__main__':
         'load_size': load_size,
         'fine_size': fine_size,
         'data_mean': data_mean,
-        'randomize': True
+        'randomize': True,
+        'num_categories': 100
         }
     opt_data_val = {
         'data_root': '../../data/images/',
@@ -133,7 +134,8 @@ if __name__ == '__main__':
         'load_size': load_size,
         'fine_size': fine_size,
         'data_mean': data_mean,
-        'randomize': False
+        'randomize': False,
+        'num_categories': 100
         }
 
     loader_train = DataLoaderDisk(**opt_data_train)

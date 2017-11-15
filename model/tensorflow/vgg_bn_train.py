@@ -111,6 +111,7 @@ if __name__ == '__main__':
     parser.add_argument('-b', default=25, type=int)
     parser.add_argument('-e', default=500, type=int)
     parser.add_argument('-l', '--load', default=False, action='store_true')
+    parser.add_argument('-f', '--file', default='vgg19_bn.h5')
     args = parser.parse_args()
     
     batch_size = args.b
@@ -119,7 +120,7 @@ if __name__ == '__main__':
     fine_size = 224
     lr = 0.0001
     data_mean = np.asarray([0.45834960097,0.44674252445,0.41352266842])
-    path_save = 'vgg19_bn.h5'
+    path_save = args.f
     load = args.l
 
     opt_data_train = {

@@ -112,6 +112,8 @@ if __name__ == '__main__':
     parser.add_argument('-e', default=500, type=int)
     parser.add_argument('-l', '--load', default=False, action='store_true')
     parser.add_argument('-f', '--file', default='vgg19_bn.h5')
+    parser.add_argument('-v', '--val', default=True, action='store_false')
+    parser.add_argument('-t', '--test', default=True, action='store_false')
     args = parser.parse_args()
     
     batch_size = args.b
@@ -180,26 +182,28 @@ if __name__ == '__main__':
         model.save(model_file)
         print 'Training Finished!'
 
-    print 'Validating...'
-    loader_val.reset()
-    l, acc1, acc5 = model.evaluate_generator(
-        generator=create_generator(loader_val, batch_size),
-        steps=validation_steps
-    )
-    print 'loss: {}, acc1: {}, acc5: {}'.format(l, acc1, acc5)
+    if args.val:
+        print 'Validating...'
+        loader_val.reset()
+        l, acc1, acc5 = model.evaluate_generator(
+            generator=create_generator(loader_val, batch_size),
+            steps=validation_steps
+        )
+        print 'loss: {}, acc1: {}, acc5: {}'.format(l, acc1, acc5)
 
-    print 'Predicting...'
-    preds = model.predict_generator(
-        generator=create_generator(loader_test, batch_size),
-        steps=test_steps
-    )
+    if args.test:
+        print 'Predicting...'
+        preds = model.predict_generator(
+            generator=create_generator(loader_test, batch_size),
+            steps=test_steps
+        )
 
-    print 'Saving predictions...'
-    with open('../../data/test.txt','r') as lines:
-        filenames = [line.split(' ')[0] for line in lines]
+        print 'Saving predictions...'
+        with open('../../data/test.txt','r') as lines:
+            filenames = [line.split(' ')[0] for line in lines]
 
-    with open('../../evaluation/test.pred.txt','w') as file:
-        for i,pred in enumerate(preds):
-            top_indices = pred.argsort()[:,-5:][:,::-1]
-            top5 = ' '.join(str(i) for i in top_indices)
-            file.write(filenames[i] + ' ' + top5 + '\n') 
+        with open('../../evaluation/test.pred.txt','w') as file:
+            for i,pred in enumerate(preds):
+                top_indices = pred.argsort()[:,-5:][:,::-1]
+                top5 = ' '.join(str(i) for i in top_indices)
+                file.write(filenames[i] + ' ' + top5 + '\n') 

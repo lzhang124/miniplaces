@@ -102,6 +102,7 @@ def VGG_16():
 
 
 def create_generator(loader, batch_size):
+    loader.reset()
     while True:
         yield loader.next_batch(batch_size)
 

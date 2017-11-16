@@ -1,13 +1,21 @@
-pred = open('../../evaluation/val.pred.txt','r')
-preds = [line.split()[1:] for line in pred]
-gold = open('../../data/val.txt','r')
-golds = [line.split()[1] for line in gold]
+with open('../../evaluation/val.pred.txt','r') as f:
+    preds = {}
+    for line in f:
+        pred = line.split()
+        preds[pred[0]] = pred[1:]
+with open('../../data/val.txt','r') as f:
+    golds = {}
+    for line in f:
+        gold = line.split()
+        golds[gold[0]] = gold[1]
 
+print preds
+print gold
 count = 0
 assert len(preds) == len(golds)
-for i in range(len(preds)):
-    if golds[i] in preds[i]:
-        print golds[i]
-        print preds[i]
+for file in preds:
+    if golds[file] in preds[file]:
+        print golds[file]
+        print preds[file]
         count+=1
-print(float(count)/len(preds))
+print float(count)/len(preds)

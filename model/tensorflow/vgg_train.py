@@ -159,7 +159,8 @@ if __name__ == '__main__':
         print 'Predicting...'
         preds = model.predict_generator(
             generator=create_generator(loader_test, batch_size),
-            steps=test_steps
+            steps=test_steps,
+            verbose=1
         )
 
         print 'Saving predictions...'
@@ -167,7 +168,7 @@ if __name__ == '__main__':
             filenames = [line.split(' ')[0] for line in lines]
 
         with open('../../evaluation/test.pred.txt','w') as file:
-            top_indices = preds.argsort()[:,-5:]
+            top_indices = preds.argsort()[:,-1:-6:-1]
             for i in xrange(len(preds)):
                 top5 = ' '.join(str(j) for j in top_indices[i])
                 file.write(filenames[i] + ' ' + top5 + '\n')

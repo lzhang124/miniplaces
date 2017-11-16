@@ -187,12 +187,12 @@ if __name__ == '__main__':
 
     if args.val:
         print 'Validating...'
-        loader_val.reset()
-        l, acc1, acc5 = model.evaluate_generator(
-            generator=create_generator(loader_val, batch_size),
-            steps=validation_steps
-        )
-        print 'loss: {}, acc1: {}, acc5: {}'.format(l, acc1, acc5)
+        # loader_val.reset()
+        # l, acc1, acc5 = model.evaluate_generator(
+        #     generator=create_generator(loader_val, batch_size),
+        #     steps=validation_steps
+        # )
+        # print 'loss: {}, acc1: {}, acc5: {}'.format(l, acc1, acc5)
 
         opt_data_wat = {
         'data_root': '../../data/images/',
@@ -230,7 +230,6 @@ if __name__ == '__main__':
             steps=test_steps,
             verbose=1
         )
-        print preds[0]
 
         print 'Saving predictions...'
         with open('../../data/test.txt','r') as lines:

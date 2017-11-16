@@ -21,7 +21,7 @@ class DataLoaderH5(object):
         assert self.im_set.shape[0]==self.lab_set.shape[0], '#images and #labels do not match!'
         assert self.im_set.shape[1]==self.load_size, 'Image size error!'
         assert self.im_set.shape[2]==self.load_size, 'Image size error!'
-        print('# Images found:', self.num)
+        print '# Images found:', self.num
 
         self.shuffle()
         self._idx = 0
@@ -88,7 +88,7 @@ class DataLoaderDisk(object):
         self.list_im = np.array(self.list_im, np.object)
         self.list_lab = np.array(self.list_lab, np.int64)
         self.num = self.list_im.shape[0]
-        print('# Images found:', self.num)
+        print '# Images found:', self.num
 
         # permutation
         perm = np.random.permutation(self.num) 

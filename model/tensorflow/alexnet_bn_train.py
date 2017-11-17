@@ -59,7 +59,7 @@ def create_generator(loader, batch_size):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-b', default=25, type=int)
-    parser.add_argument('-e', default=500, type=int)
+    parser.add_argument('-e', default=12, type=int)
     parser.add_argument('-l', '--load', default=False, action='store_true')
     parser.add_argument('-f', '--file', default='vgg19_bn.h5')
     parser.add_argument('-v', '--val', default=True, action='store_false')

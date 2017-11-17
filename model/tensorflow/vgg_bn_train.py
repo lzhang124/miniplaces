@@ -183,7 +183,7 @@ if __name__ == '__main__':
             validation_data=create_generator(loader_val, batch_size),
             validation_steps=validation_steps
         )
-        model.save(model_file)
+        model.save(path_save)
         print 'Training Finished!'
 
     if args.val:

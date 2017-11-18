@@ -1,6 +1,6 @@
-model1 = load_model('vgg_50000.h5')
-model2 = load_model('vgg_50000.h5')
-batch_size = 50;
+model1 = load_model('vgg19_bn.h5')
+model2 = load_model('alexnet_bn.h5')
+batch_size = 25;
 
 opt_data_test = {
     'data_root': '../../data/images/',
@@ -14,6 +14,7 @@ opt_data_test = {
     }
 
 loader_test = DataLoaderDisk(**opt_data_test)
+test_steps = loader_test.size() / batch_size
 
 def create_generator(loader, batch_size):
     loader.reset()
@@ -41,7 +42,7 @@ with open('../../data/test.txt','r') as lines:
 with open('../../evaluation/averaged.txt','w') as file:
     top_indices1 = preds1.argsort()[:,-1:-6:-1]
     top_indices2 = preds2.argsort()[:,-1:-6:-1]
-    top_indices = np.around((top_indices1+top_indices2)/2)
+    top_indices = (top_indices1 + top_indices2) / 2
     for i in xrange(len(preds1)):
         top5 = ' '.join(str(j) for j in top_indices[i])
         file.write(filenames[i] + ' ' + top5 + '\n')
